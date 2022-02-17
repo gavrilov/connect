@@ -1,7 +1,7 @@
 """Server for sending direct message via telegram bot"""
 import os
 import requests
-from flask import Flask
+from flask import Flask, render_template, request, flash
 from dotenv import load_dotenv
 
 
@@ -32,9 +32,17 @@ app.config['TELEGRAM_BOT_TOKEN'] = os.getenv("TELEGRAM_BOT_TOKEN")
 app.config['TELEGRAM_CHAT_ID'] = os.getenv("TELEGRAM_CHAT_ID")
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def main_page():
-    return "<p>Hello, World!</p>"
+    """Main page - show form to send message to telegram bot or process form and show status"""
+    if request.method == 'POST':
+        name = request.form['name']
+        message = request.form['message']
+        if send_message(f"{name} says: {message}"):
+            flash("Message sent successfully", 'success')
+        else:
+            flash("Unable to send message - please try again later", 'error')
+    return render_template("send_message_form.html")
 
 
 # run the app
