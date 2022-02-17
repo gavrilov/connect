@@ -1,7 +1,14 @@
+"""Server for sending direct message via telegram bot"""
 import os
 from flask import Flask
 from dotenv import load_dotenv
 
+
+""" Load environment variables
+    TELEGRAM_BOT_TOKEN: Telegram bot token
+    TELEGRAM_CHAT_ID: Telegram chat id
+    SECRET_KEY: Flask secret key
+ """
 load_dotenv()
 
 app = Flask(__name__)
