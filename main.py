@@ -7,7 +7,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 
 
 @app.route("/")
-def hello_world():
+def main_page():
     return "<p>Hello, World!</p>"
 
 
