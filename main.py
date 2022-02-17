@@ -1,5 +1,6 @@
 """Server for sending direct message via telegram bot"""
 import os
+import requests
 from flask import Flask
 from dotenv import load_dotenv
 
@@ -11,8 +12,24 @@ from dotenv import load_dotenv
  """
 load_dotenv()
 
+
+def send_message(message):
+    """Send message to telegram bot
+    Args:
+        message (str): message to send
+    """
+    url = f"https://api.telegram.org/bot{app.config['TELEGRAM_BOT_TOKEN']}/sendMessage"
+    data = {"chat_id": app.config['TELEGRAM_CHAT_ID'], "text": message}
+    r = requests.post(url, data=data)
+    if r.status_code != 200:
+        return False
+    return True
+
+
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
+app.config['TELEGRAM_BOT_TOKEN'] = os.getenv("TELEGRAM_BOT_TOKEN")
+app.config['TELEGRAM_CHAT_ID'] = os.getenv("TELEGRAM_CHAT_ID")
 
 
 @app.route("/")
